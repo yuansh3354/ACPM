@@ -1,0 +1,38 @@
+# configs of trainning-loop, plz attention this config_file must be in floder named "configs". plz use absolute_pathname
+# 训练集使用的配置文件，请务必放在configs文件夹下 （提示：所有路径都使用绝对路径，避免不必要的报错）
+--- 
+
+# input_h5: use step_01 to create
+# training model args
+data_arguments: 
+  input_h5: /home/yuansh/Desktop/rgb_light_clean.h5
+  ckpt: /home/yuansh/Desktop/Double_Branch_Dense_Net/Best_Model/epoch=152-val_acc=1.00000-recall=1.00000.ckpt
+  use_gpu: true
+  ctc_result: /home/yuansh/Desktop/predict_ctcs_result.csv
+  
+  
+  ### 以下内容不要随意修改
+  model_test: 
+    - /media/yuansh/14THHD/CTC_Image_Classification/AB_DenseNet/code/output/trainig_loop_data_set.h5
+    - ['rgb_light_X_train','rgb_light_X_val','rgb_light_X_test']
+  check_model_test: false
+
+  
+sns_arguments:
+  sns_labels: [0, 1]
+  sns_figsize: [5, 4]
+  sns_cmap: RdBu_r
+  sns_title: confusion matrix
+  sns_xlabel: predict
+  sns_ylabel: true_label
+  sns_save_fig: /home/yuansh/Desktop/dataset.png
+  sns_dpi: 400
+# The following sections are prohibited
+# 以下部分禁止修改  
+model_arguments:
+  growth_rate: 12
+  block_config: [(6,12,4), (6,12,4)]
+  bn_size: 4
+  theta: 0.5
+  num_classes: 2
+
