@@ -1,0 +1,63 @@
+# configs of trainning-loop, plz attention this config_file must be in floder named "configs". plz use absolute_pathname
+# 训练集使用的配置文件，请务必放在configs文件夹下 （提示：所有路径都使用绝对路径，避免不必要的报错）
+--- 
+
+# training model args
+training_arguments:
+  train_batch_size: 128
+  test_batch_size: 64
+  num_workers: 28
+  max_epochs: 200
+  
+model_arguments:
+  growth_rate: 12
+  block_config: [(6,12,4), (6,12,4)]
+  bn_size: 4
+  theta: 0.5
+  num_classes: 2
+  output_dir: /home/yuansh/Desktop/lightning_logs
+  ckpt_dir: /home/yuansh/Desktop/Double_Branch_Dense_Net
+  ckpt_name: '{epoch}-{val_acc:.5f}-{recall:.5f}'
+  pl_monitor: val_acc
+  pl_monitor_mode: max
+  save_top_k: 200
+  
+  
+golbal_setting:
+  random_seed: 42
+  
+data_arguments: 
+  # Data storage location, separate for each sample, and separate for each cell types corresponding to CK++/CTC (and other) cell types. such as ~/sampleID/CD+CK++/cell_id.rgb.jpg
+  # 数据存放位置，每个样本单独存放，每个样本对应的 CK++/CTC（以及其他） 的细胞类型也单独存放， 例如 ~/sampleID/CD+CK++/cell_id.rgb.jpg
+  data_dir: /media/yuansh/My Passport/科研项目/没结果的课题/CTC图像/CTC存储图片（北京）
+  # image format
+  # 图像格式
+  endwith:
+    - jpg
+    - tiff
+    - tif
+    - png
+  # Extract RGB and Light (named features of RGB and Light)
+  # 提取亮度图和RGB图（RGB图和亮度图的命名特征）
+  use_image_type: ['rgb','c']
+  # cell label
+  # 细胞类型标签
+  labels: ['CD-CK++','阳性CTC']  
+  # Save data information
+  # 保存数据信息
+  save_files:
+    images_info_h5: /media/yuansh/14THHD/CTC_Image_Classification/AB_DenseNet/code/output/image_csv_info.h5
+    rgb_light_h5: /media/yuansh/14THHD/CTC_Image_Classification/AB_DenseNet/code/output/rgb_light_clean.h5
+    independent_test: /media/yuansh/14THHD/CTC_Image_Classification/AB_DenseNet/code/output/AB_independent_test.h5
+    trainig_loop_data_set: 
+      - /media/yuansh/14THHD/CTC_Image_Classification/AB_DenseNet/code/output/trainig_loop_data_set.h5
+      - ['rgb_light_X_train','rgb_light_X_val','rgb_light_X_test']
+  # Down sampling negtive 
+  # 是否对阴性样本进行降采样
+  downsampling: True
+  downsample_rate: 0.0138
+  # test data ratio
+  test_size: 0.1
+  validation_size: 0.1
+  
+

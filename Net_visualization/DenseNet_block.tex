@@ -1,0 +1,87 @@
+\documentclass[border=15pt, multi, tikz]{standalone}
+\usepackage{import}
+\usepackage{amssymb}
+\usepackage{pgfplots}
+\usepgfplotslibrary{patchplots}
+\usetikzlibrary{patterns, positioning, arrows}
+\pgfplotsset{compat=1.15}
+\subimport{./layers/}{init}
+\usetikzlibrary{positioning}
+
+\def\ConvColor{rgb:yellow,5;red,2.5;white,5}
+\def\ConvReluColor{rgb:yellow,5;red,5;white,5}
+\def\PoolColor{rgb:red,10;black,2}
+\def\DcnvColor{5}
+\def\SoftmaxColor{rgb:magenta,5;black,7}
+\def\InputColor{rgb:red,8}
+\def\SumColor{rgb:blue,5;green,15}
+\def\poolsep{1}
+\def\DenseTransferColor{rgb:orange,2;red,3;black,1.2}
+
+\begin{document}
+\begin{tikzpicture}
+\tikzstyle{connection}=[ultra thick,every node/.style={sloped,allow upside down},draw=\edgecolor,opacity=0.6]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Draw Layer Blocks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% DenseBlock
+\pic[shift={(0,0,0)}] at (0,0,0) {Box={name=input,%
+        fill=\DenseTransferColor,opacity=0.65,%
+        height=40,width=3,depth=40}};
+
+% block6_1
+\pic[shift={(2,0,0)}] at (input-east) {RightBandedBox={name=block1,%
+        fill=\ConvColor,bandfill=\ConvReluColor,%
+        height=30,width={5,3},depth=30}};
+
+\pic[shift={(2,0,0)}] at (block1-east) {RightBandedBox={name=block2,%
+        fill=\ConvColor,bandfill=\ConvReluColor,%
+        height=30,width={5,3},depth=30}};
+
+\pic[shift={(2,0,0)}] at (block2-east) {RightBandedBox={name=block3,%
+        ,fill=\ConvColor,bandfill=\ConvReluColor,%
+        height=30,width={5,3},depth=30}};
+
+\pic[shift={(2,0,0)}] at (block3-east) {RightBandedBox={name=block4,%
+        fill=\ConvColor,bandfill=\ConvReluColor,%
+        height=30,width={5,3},depth=30}};
+
+\pic[shift={(2,0,0)}] at (block4-east) {Box={name=transition1,%
+       fill=\SoftmaxColor,opacity=0.6,%
+        height=10,width=5,depth=30}};
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Draw connections
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\draw [connection]  (input-east)    -- node {\midarrow} (block1-west);
+
+\draw[-{Stealth[length=0.5cm]}, red!50!black] (0.6, 0) arc [start angle=135, end angle=45, radius=4] node {};
+\draw[-{Stealth[length=0.5cm]}, red!50!black] (0.6, 0) arc [start angle=135, end angle=45, radius=6.5] node {};
+\draw[-{Stealth[length=0.5cm]}, red!50!black] (0.6, 0) arc [start angle=135, end angle=45, radius=9] node {};
+\draw[-{Stealth[length=0.5cm]}, red!50!black] (0.6, 0) arc [start angle=135, end angle=45, radius=11.5] node {};
+
+
+\draw [connection]  (block1-east)    -- node {\midarrow} (block2-west);
+
+\draw[-{Stealth[length=0.5cm]}, blue!50!black] (4.15, 0) arc [start angle=135, end angle=45, radius=4] node {};
+\draw[-{Stealth[length=0.5cm]}, blue!50!black] (4.15, 0) arc [start angle=135, end angle=45, radius=6.5] node {};
+\draw[-{Stealth[length=0.5cm]}, blue!50!black] (4.15, 0) arc [start angle=135, end angle=45, radius=9] node {};
+
+
+\draw [connection]  (block2-east)    -- node {\midarrow} (block3-west);
+
+\draw[-{Stealth[length=0.5cm]}, magenta!50!black] (7.75, 0) arc [start angle=135, end angle=45, radius=4] node {};
+\draw[-{Stealth[length=0.5cm]}, magenta!50!black] (7.75, 0) arc [start angle=135, end angle=45, radius=6.5] node {};
+
+
+\draw [connection]  (block3-east)    -- node {\midarrow} (block4-west);
+\draw[-{Stealth[length=0.5cm]}, magenta!50!black] (11.3, 0) arc [start angle=135, end angle=45, radius=4] node {};
+
+
+\draw [connection]  (block4-east)    -- node {\midarrow} (transition1-west);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{tikzpicture}
+\end{document}\grid
