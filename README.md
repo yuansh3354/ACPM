@@ -1,5 +1,5 @@
-# ACPM
-ACPM Installation
+
+# ACPM Installation
 ===========
 
 For instructions on installing anaconda on your machine (download the distribution that comes with python 3):
