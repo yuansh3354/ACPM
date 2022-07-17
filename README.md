@@ -1,6 +1,5 @@
 
 # ACPM Installation
-===========
 
 For instructions on installing anaconda on your machine (download the distribution that comes with python 3):
 https://www.anaconda.com/distribution/
